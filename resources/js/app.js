@@ -1,5 +1,7 @@
 import "./bootstrap";
 
+import.meta.glob(["../images/**"]);
+
 const requestApi = async (method, timerId, endpoint, body) => {
     try {
         const response = await fetch(`/api/timer/${timerId}/${endpoint}`, {
