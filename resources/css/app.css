@@ -129,6 +129,7 @@ body {
 .timer-page[data-timer-state="finished"] .wordmark,
 .timer-page[data-timer-state="finished"] .wordmark strong,
 .timer-page[data-timer-state="finished"] .stage-label,
+.timer-page[data-timer-state="finished"] .event-theme,
 .timer-page[data-timer-state="finished"] .event-meta { color: white; }
 .timer-page[data-timer-state="finished"] .stage-label::before,
 .timer-page[data-timer-state="finished"] .stage-label::after { background: white; }

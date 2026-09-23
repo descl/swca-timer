@@ -3,7 +3,7 @@ services:
     build:
       context: .
     ports:
-      - "${APP_PORT:-8000}:8000"
+      - "${APP_PORT:-8001}:8000"
     environment:
       APP_NAME: "SWCA Timer"
       APP_ENV: local
