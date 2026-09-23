@@ -38,6 +38,44 @@ APP_URL=
 DB_URL=mysql://user:password@address:3306/database # connection string Mysql 
 ```
 
+## Lancement avec Docker
+
+Prerequis : Docker et Docker Compose.
+
+1. Construire et demarrer l'application :
+```bash
+docker compose up --build
+```
+
+2. Ouvrir l'application :
+```text
+http://localhost:8000
+```
+
+Docker lance deux services :
+- `app` : Laravel avec les assets Vite deja compiles dans l'image.
+- `mysql` : base MySQL 8.4 persistante via le volume `mysql_data`.
+
+Les migrations sont lancees automatiquement au demarrage du conteneur `app`.
+Les variables peuvent etre surchargees depuis un fichier `.env` local, par exemple :
+
+```env
+APP_PORT=8000
+DB_DATABASE=swca_timer
+DB_USERNAME=swca
+DB_PASSWORD=secret
+DB_ROOT_PASSWORD=root
+RUN_MIGRATIONS=true
+```
+
+Commandes utiles :
+```bash
+docker compose exec app php artisan migrate
+docker compose exec app php artisan test
+docker compose down
+docker compose down -v # supprime aussi les donnees MySQL
+```
+
 ## Guide d'utilisation
 
 ### La page Timer
