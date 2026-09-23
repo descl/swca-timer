@@ -1,12 +1,21 @@
 @extends('layouts.main')
 
-@section('title', 'Display')
+@section('title', 'Timer')
 
 @section('content')
-<main class="flex flex-col items-center justify-center min-h-full bg-white px-6 py-24 sm:py-32 lg:px-8">
-    <img src="{{ Vite::asset('resources/images/Logo-SWCA-2025.png') }}" alt="SWCA Logo" class="mx-auto h-24 w-auto">
-    <p id="time" class="large-timer font-semibold tracking-tight text-balance text-blue-900">
-        -- : --
-    </p>
+<main class="timer-page flex min-h-full flex-col" data-timer-state="idle">
+    <header class="event-header">
+        <p class="wordmark" aria-label="womENcourage 2026">wom<strong>EN</strong>courage™ 2026</p>
+        <p class="event-meta">Sophia Antipolis · French Riviera<br>30 September – 2 October 2026</p>
+    </header>
+
+    <section class="timer-stage" aria-labelledby="timer-label">
+        <p id="timer-label" class="stage-label">Session timer</p>
+        <p id="time" class="large-timer" role="timer" aria-live="off">00:00</p>
+        <p class="event-theme">Unmute Yourself, Grow Stronger Together</p>
+    </section>
+
+    <a class="timer-controls-link" href="{{ url('/controls') }}">Controls</a>
+    <div class="wave-band" aria-hidden="true"></div>
 </main>
 @endsection

@@ -31,6 +31,7 @@ RUN apt-get update \
         default-mysql-client \
         libicu-dev \
         libonig-dev \
+        libsqlite3-dev \
         libzip-dev \
         unzip \
     && docker-php-ext-install intl mbstring pdo_mysql pdo_sqlite zip \

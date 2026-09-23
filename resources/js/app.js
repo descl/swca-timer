@@ -68,32 +68,49 @@ class Timer {
             clearInterval(this.interval);
         }
 
-        this.interval = setInterval(() => {
-            const now = new Date();
-            const diff = new Date(this.endAt * 1000) - now;
+        if (!this.endAt) {
+            this._setTimeText(0, 0);
+            this._setState("idle");
+            return;
+        }
 
-            if (diff <= 0) {
-                this.element.textContent = "00:00";
-                clearInterval(this.interval);
-                return;
-            }
+        this._update();
 
-            const mins = Math.floor(diff / 1000 / 60);
-            const secs = Math.floor((diff / 1000) % 60);
+        this.interval = setInterval(this._update.bind(this), 500);
+    }
 
-            this._setTimeText(mins, secs);
-        }, 500);
+    _update() {
+        const now = new Date();
+        const diff = new Date(this.endAt * 1000) - now;
+
+        if (diff <= 0) {
+            this._setTimeText(0, 0);
+            this._setState("finished");
+            clearInterval(this.interval);
+            return;
+        }
+
+        const mins = Math.floor(diff / 1000 / 60);
+        const secs = Math.floor((diff / 1000) % 60);
+
+        this._setTimeText(mins, secs);
+        this._setState(diff <= 60_000 ? "ending" : "running");
     }
 
     _stop() {
         clearInterval(this.interval);
         this._setTimeText(0, 0);
+        this._setState("idle");
     }
 
     _setTimeText(mins, secs) {
         this.element.textContent = `${String(mins).padStart(2, "0")}:${String(
             secs
         ).padStart(2, "0")}`;
+    }
+
+    _setState(state) {
+        document.querySelector(".timer-page")?.setAttribute("data-timer-state", state);
     }
 }
 
