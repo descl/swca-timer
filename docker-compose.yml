@@ -37,10 +37,11 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${DB_ROOT_PASSWORD:-root}"]
+      test: ["CMD", "mysql", "-h", "127.0.0.1", "-u", "${DB_USERNAME:-swca}", "-p${DB_PASSWORD:-secret}", "-e", "SELECT 1", "${DB_DATABASE:-swca_timer}"]
       interval: 5s
       timeout: 5s
       retries: 20
+      start_period: 30s
     volumes:
       - mysql_data:/var/lib/mysql
 
