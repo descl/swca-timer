@@ -49,7 +49,7 @@ docker compose up --build
 
 2. Ouvrir l'application :
 ```text
-http://localhost:8000
+http://localhost:8002
 ```
 
 Docker lance deux services :
@@ -60,8 +60,8 @@ Les migrations sont lancees automatiquement au demarrage du conteneur `app`.
 Les variables peuvent etre surchargees depuis un fichier `.env` local, par exemple :
 
 ```env
-APP_PORT=8000
-APP_URL=http://localhost:8000
+APP_PORT=8002
+APP_URL=http://localhost:8002
 APP_KEY=base64:... # sinon une cle temporaire est generee a chaque demarrage
 DB_DATABASE=swca_timer
 DB_USERNAME=swca
