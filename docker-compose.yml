@@ -6,10 +6,11 @@ services:
       - "${APP_PORT:-8000}:8000"
     environment:
       APP_NAME: "SWCA Timer"
-      APP_ENV: local
+      APP_ENV: ${APP_ENV:-production}
       APP_KEY: ${APP_KEY:-}
       APP_DEBUG: ${APP_DEBUG:-false}
       APP_URL: ${APP_URL:-http://localhost:8000}
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-*}
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306

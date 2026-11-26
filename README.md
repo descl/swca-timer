@@ -68,6 +68,8 @@ DB_USERNAME=swca
 DB_PASSWORD=secret
 DB_ROOT_PASSWORD=root
 RUN_MIGRATIONS=true
+APP_ENV=production    # force les URLs en https
+TRUSTED_PROXIES=*     # derriere un reverse proxy (Caddy...), mettre l'IP/CIDR du proxy si l'app est exposee directement
 ```
 
 Commandes utiles :
