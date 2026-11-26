@@ -63,37 +63,64 @@ class Timer {
         }
     }
 
+    // Duree d'affichage de l'ecran "Temps ecoule" avant de revenir a l'attente
+    static FINISHED_DISPLAY_MS = 60_000;
+    // Seuil de l'alerte de fin (rouge + clignotement)
+    static ENDING_THRESHOLD_S = 5;
+
     _start() {
         if (this.interval) {
             clearInterval(this.interval);
+            this.interval = null;
         }
 
-        this.interval = setInterval(() => {
-            const now = new Date();
-            const diff = new Date(this.endAt * 1000) - now;
-
-            if (diff <= 0) {
-                this.element.textContent = "00:00";
-                clearInterval(this.interval);
-                return;
-            }
-
-            const mins = Math.floor(diff / 1000 / 60);
-            const secs = Math.floor((diff / 1000) % 60);
-
-            this._setTimeText(mins, secs);
-        }, 500);
+        this._tick();
+        if (this.endAt) {
+            this.interval = setInterval(this._tick.bind(this), 250);
+        }
     }
 
-    _stop() {
+    _tick() {
+        if (!this.endAt) {
+            this._setTimeText(0, 0, "--:--");
+            this._setState("idle");
+            return;
+        }
+
+        const diff = this.endAt * 1000 - Date.now();
+
+        if (diff > 0) {
+            // Arrondi au superieur : "00:01" reste affiche jusqu'a la toute fin
+            const total = Math.ceil(diff / 1000);
+            this._setTimeText(Math.floor(total / 60), total % 60);
+            this._setState(total <= Timer.ENDING_THRESHOLD_S ? "ending" : "running");
+            return;
+        }
+
+        if (-diff < Timer.FINISHED_DISPLAY_MS) {
+            this._setTimeText(0, 0);
+            this._setState("finished");
+            return;
+        }
+
+        this._setTimeText(0, 0, "--:--");
+        this._setState("idle");
         clearInterval(this.interval);
-        this._setTimeText(0, 0);
+        this.interval = null;
     }
 
-    _setTimeText(mins, secs) {
-        this.element.textContent = `${String(mins).padStart(2, "0")}:${String(
-            secs
-        ).padStart(2, "0")}`;
+    _setState(state) {
+        const display = document.getElementById("display");
+        if (display && display.dataset.timerState !== state) {
+            display.dataset.timerState = state;
+        }
+    }
+
+    _setTimeText(mins, secs, text = null) {
+        if (!this.element) return;
+        this.element.textContent =
+            text ??
+            `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
     }
 }
 
