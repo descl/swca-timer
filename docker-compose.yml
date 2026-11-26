@@ -27,6 +27,9 @@ services:
     volumes:
       - app_storage:/var/www/html/storage
       - app_cache:/var/www/html/bootstrap/cache
+    networks:
+      - default
+      - proxy
 
   mysql:
     image: mysql:8.4
@@ -52,3 +55,10 @@ volumes:
   app_storage:
   app_cache:
   mysql_data:
+
+networks:
+  # Reseau externe du reverse proxy (Caddy) : il joint l'app via swcatimer-app-1:8002.
+  # A creer une fois s'il n'existe pas : docker network create proxy
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-proxy}

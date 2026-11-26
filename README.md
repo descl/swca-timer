@@ -56,6 +56,8 @@ Docker lance deux services :
 - `app` : Laravel avec les assets Vite deja compiles dans l'image.
 - `mysql` : base MySQL 8.4 persistante via le volume `mysql_data`, accessible uniquement depuis `app` (aucun port publie sur l'hote, donc pas de conflit avec un MySQL deja present sur 3306).
 
+Le service `app` est aussi branche sur le reseau Docker externe `proxy` (nom modifiable avec `PROXY_NETWORK`), partage avec le reverse proxy (Caddy) qui le joint via `swcatimer-app-1:8002`. S'il n'existe pas : `docker network create proxy`.
+
 Les migrations sont lancees automatiquement au demarrage du conteneur `app`.
 Les variables peuvent etre surchargees depuis un fichier `.env` local, par exemple :
 
