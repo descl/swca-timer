@@ -64,7 +64,7 @@ class Timer {
     }
 
     // Duree d'affichage de l'ecran "Temps ecoule" avant de revenir a l'attente
-    static FINISHED_DISPLAY_MS = 60_000;
+    static FINISHED_DISPLAY_MS = 30_000;
     // Seuil de l'alerte de fin (rouge + clignotement)
     static ENDING_THRESHOLD_S = 5;
 
