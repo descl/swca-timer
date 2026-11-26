@@ -6,10 +6,11 @@ services:
       - "${APP_PORT:-8000}:8000"
     environment:
       APP_NAME: "SWCA Timer"
-      APP_ENV: local
+      APP_ENV: ${APP_ENV:-production}
       APP_KEY: ${APP_KEY:-}
       APP_DEBUG: ${APP_DEBUG:-false}
       APP_URL: ${APP_URL:-http://localhost:8000}
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-*}
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
@@ -29,18 +30,21 @@ services:
 
   mysql:
     image: mysql:8.4
-    ports:
-      - "${DB_FORWARD_PORT:-3306}:3306"
+    # Pas de port publie sur l'hote : l'app joint MySQL via le reseau Docker (mysql:3306).
+    # Pour y acceder depuis le serveur, decommenter en choisissant un port libre :
+    # ports:
+    #   - "${DB_FORWARD_PORT:-3307}:3306"
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-swca_timer}
       MYSQL_USER: ${DB_USERNAME:-swca}
       MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${DB_ROOT_PASSWORD:-root}"]
+      test: ["CMD", "mysql", "-h", "127.0.0.1", "-u", "${DB_USERNAME:-swca}", "-p${DB_PASSWORD:-secret}", "-e", "SELECT 1", "${DB_DATABASE:-swca_timer}"]
       interval: 5s
       timeout: 5s
       retries: 20
+      start_period: 30s
     volumes:
       - mysql_data:/var/lib/mysql
 
